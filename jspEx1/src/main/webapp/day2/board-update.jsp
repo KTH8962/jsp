@@ -26,7 +26,7 @@
 
 </head>
 <body>
-	<form action="board-update-result.jsp">	
+	<form action="board-modify-result.jsp">	
 		<%@include file="db.jsp"%>	
 		<%
 			ResultSet rs = null;
