@@ -7,6 +7,12 @@
 	<title>Insert title here</title>
 </head>
 <body>
+	<%
+		//세션 끊기
+		//session.removeAttribute("userId");
+		//세션에 대한 정보 모두 한 번에 끊기
+		session.invalidate();
+	%>
 	<form action="login_result.jsp" method="post">
 		<div>
 			<label>아이디 : <input type="text" name="userId"></label>

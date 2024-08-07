@@ -14,8 +14,10 @@
 	 border-collapse: collapse;
 	 padding: 10px;
 	}
-
-}
+	.comment {
+		width: 330px; height: 20px;
+		padding: 5px; margin: 10px 0;
+	}
 	
 </style>
 
@@ -26,6 +28,7 @@
 		<%
 			ResultSet rs = null;
 			Statement stmt = null;
+			
 			String boardNo = request.getParameter("boardNo");
 			try{
 				stmt = conn.createStatement();
@@ -36,9 +39,35 @@
 			<input type="hidden" name="boardNo" value="<%= rs.getString("boardNo") %>">
 			<div>제목 : <%= rs.getString("title") %></div>
 			<div>내용 : <%= rs.getString("contents") %></div>
+			<hr>
+			<div>
+				댓글 : <input type="text" name="comment" placeholder="댓글을 입력하세요" class="comment">
+				<button type="button" onclick="fnComment()">등록</button>	
+			</div>
+			<hr>
+			<%
+				stmt = conn.createStatement();
+				String querytexts = "SELECT * FROM TBL_COMMENT C INNER JOIN TBL_USER U ON C.userId = U.userId WHERE boardNo =" + boardNo;
+				rs = stmt.executeQuery(querytexts);
+			
+				while(rs.next()){
+			%>		
+				<div>
+					
+					<span><%= rs.getString("name") %></span><small>(<%= rs.getString("cdatetime") %>)</small> : <span><%= rs.getString("comment") %></span>
+					<%-- <div><input type="text" name="comment" placeholder="댓글을 입력하세요" class="comment"><button type="button" onclick="fnComment(<%= rs.getString("commentNo") %>)">등록</button></div> --%>
+				</div>
+			<%}%>
+		<%
+			String sessionId = (String) session.getAttribute("userId");
+			String sessionStatus = (String) session.getAttribute("status");
+			
+			if(sessionStatus.equals("A") || rs.getString("userId").equals(sessionId)){
+		%>
 			<button type="submit" onclick="fnFunc('D')">삭제</button>
 			<button type="submit" onclick="fnFunc('U')">수정</button>
-		<%
+		<%		
+			}
 				} else {
 					out.println("삭제된 게시글 입니다.");
 				}
@@ -58,6 +87,12 @@
 		} else if(type == "U") {
 			form.action = "board-update.jsp";
 		}
+		form.submit();
+	}
+	
+	function fnComment() {
+		var form = document.form;
+		form.action = "board-comment.jsp";
 		form.submit();
 	}
 </script>

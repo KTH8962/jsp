@@ -22,7 +22,6 @@
 			String querytext = "SELECT * FROM tbl_user_ex WHERE userId = '" + id + "' AND pwd = '" + pwd + "'";
 			rs = stmt.executeQuery(querytext);
 			
-			System.out.println(querytext);
 			if(rs.next()) {
 				session.setAttribute("userId", rs.getString("userId"));
 				response.sendRedirect("board-list.jsp");
