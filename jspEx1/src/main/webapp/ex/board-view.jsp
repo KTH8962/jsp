@@ -24,8 +24,25 @@
 			<input type="hidden" name="boardNo" value="<%= rs.getString("boardNo") %>">
 			<div>제목 : <%= rs.getString("title") %></div>
 			<div>내용 : <%= rs.getString("contents") %></div>
+			<hr>
+			<div>
+				<input type="text" name="comment" placeholder="댓글을 등록하세요.">
+				<button type="button" onclick="fnComment()">등록</button>
+			</div>
+			<hr>
 		<%
-			if(session.getAttribute("userId").equals(rs.getString("userId"))) {
+			String queryComment = "SELECT * FROM TBL_COMMENT_EX";
+			rs = stmt.executeQuery(queryComment);
+			while(rs.next()) {			
+		%>
+			<div>
+				<span><%= rs.getString("userId") %><small>(<%= rs.getString("cdatetime") %>)</small></span> : <span><%= rs.getString("comment") %></span>
+			</div>
+		<%
+			}
+			String userId = (String) session.getAttribute("userId");
+			String status = (String) session.getAttribute("status");
+			if(status.equals("A") || rs.getString("userId").equals(userId)) {
 		%>
 			<div>
 				<button type="submit" onclick="fnModify('U')">수정</button>
@@ -53,5 +70,9 @@
 		}
 		
 		<%-- form.action = "board-modify.jsp?type=" + type + "&boardNo=" + <%= rs.getString("boardNo") %>; --%>
+	}
+	function fnComment() {
+		var form = document.form;
+		location.href = "board-comment.jsp?&boardNo=" + form.boardNo.value + "&comment=" + form.comment.value;
 	}
 </script>

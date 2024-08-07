@@ -46,7 +46,6 @@
 			</div>
 			<hr>
 			<%
-				stmt = conn.createStatement();
 				String querytexts = "SELECT * FROM TBL_COMMENT C INNER JOIN TBL_USER U ON C.userId = U.userId WHERE boardNo =" + boardNo;
 				rs = stmt.executeQuery(querytexts);
 			

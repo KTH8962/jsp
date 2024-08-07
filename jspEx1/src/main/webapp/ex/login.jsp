@@ -7,6 +7,9 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<%
+		session.invalidate();
+	%>
 	<form action="login-result.jsp" method="post">
 		<div><label>아이디 : <input type="text" name="userId"></label></div>
 		<div><label>비밀번호 : <input type="password" name="userPwd"></label></div>
