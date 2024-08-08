@@ -10,6 +10,16 @@
 	<title>Insert title here</title>
 </head>
 <body>	
+	<%!
+		String cntQeury(String type, String id){
+			if(type.equals("success")) {
+				return "UPDATE tbl_user_ex SET cnt = 0 WHERE userId = '" + id + "'";
+			} else if (type.equals("fail")) {
+				return "UPDATE tbl_user_ex SET cnt = cnt + 1 WHERE userId = '" + id + "'";
+			}
+			return null;
+		}
+	%>
 	<%@include file="db.jsp"%>	
 	<%
 		ResultSet rs = null;
@@ -29,7 +39,7 @@
 					String status = (String) rs.getString("status");
 					session.setAttribute("userId", rs.getString("userId"));
 					session.setAttribute("status", rs.getString("status"));
-					String queryCnt = "UPDATE tbl_user_ex SET cnt = 0 WHERE userId = '" + id + "'";
+					String queryCnt = cntQeury("success", id);
 					stmt.executeUpdate(queryCnt);
 					if(status.equals("A")) {
 						response.sendRedirect("user-list.jsp");
@@ -37,7 +47,7 @@
 						response.sendRedirect("board-list.jsp");
 					}
 				} else {
-					String queryCnt = "UPDATE tbl_user_ex SET cnt = cnt + 1 WHERE userId = '" + id + "'";
+					String queryCnt = cntQeury("fail", id);
 					stmt.executeUpdate(queryCnt);
 					out.println("비밀번호를 확인해주세요.");
 	%>

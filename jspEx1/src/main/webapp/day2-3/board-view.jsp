@@ -28,6 +28,8 @@
 		<%
 			ResultSet rs = null;
 			Statement stmt = null;
+			ResultSet rsC = null;
+			Statement stmtC = null;
 			
 			String boardNo = request.getParameter("boardNo");
 			try{
@@ -40,23 +42,7 @@
 			<div>제목 : <%= rs.getString("title") %></div>
 			<div>내용 : <%= rs.getString("contents") %></div>
 			<hr>
-			<div>
-				댓글 : <input type="text" name="comment" placeholder="댓글을 입력하세요" class="comment">
-				<button type="button" onclick="fnComment()">등록</button>	
-			</div>
-			<hr>
-			<%
-				String querytexts = "SELECT * FROM TBL_COMMENT C INNER JOIN TBL_USER U ON C.userId = U.userId WHERE boardNo =" + boardNo;
-				rs = stmt.executeQuery(querytexts);
 			
-				while(rs.next()){
-			%>		
-				<div>
-					
-					<span><%= rs.getString("name") %></span><small>(<%= rs.getString("cdatetime") %>)</small> : <span><%= rs.getString("comment") %></span>
-					<%-- <div><input type="text" name="comment" placeholder="댓글을 입력하세요" class="comment"><button type="button" onclick="fnComment(<%= rs.getString("commentNo") %>)">등록</button></div> --%>
-				</div>
-			<%}%>
 		<%
 			String sessionId = (String) session.getAttribute("userId");
 			String sessionStatus = (String) session.getAttribute("status");
@@ -67,6 +53,24 @@
 			<button type="submit" onclick="fnFunc('U')">수정</button>
 		<%		
 			}
+		%>
+			<div>
+				댓글 : <input type="text" name="comment" placeholder="댓글을 입력하세요" class="comment">
+				<button type="button" onclick="fnComment()">등록</button>	
+			</div>
+			<hr>
+			<%
+				querytext = "SELECT * FROM TBL_COMMENT C INNER JOIN TBL_USER U ON C.userId = U.userId WHERE boardNo =" + boardNo;
+				rs = stmt.executeQuery(querytext);
+			
+				while(rs.next()){
+			%>		
+				<div>					
+					<span><%= rs.getString("name") %></span><small>(<%= rs.getString("cdatetime") %>)</small> : <span><%= rs.getString("comment") %></span>
+					<%-- <div><input type="text" name="comment" placeholder="댓글을 입력하세요" class="comment"><button type="button" onclick="fnComment(<%= rs.getString("commentNo") %>)">등록</button></div> --%>
+				</div>
+				<%}%>
+		<%
 				} else {
 					out.println("삭제된 게시글 입니다.");
 				}
